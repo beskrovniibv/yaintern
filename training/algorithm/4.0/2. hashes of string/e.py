@@ -14,21 +14,23 @@ class Solution:
         self.n = len(s)
         self.prefix = [0] * self.n
         self.suffix = [0] * self.n
-        self.x = [0] * (self.n + 1)
+        self.x = [0] * self.n
         self.p = 10**10 + 7
 
         for i, c in enumerate(self.s):
             if i == 0:
                 self.prefix[i] = (toInt(c)) % self.p
-                self.x[i + 1] = 1
+                self.suffix[i] = (toInt(self.s[self.n - i - 1])) % self.p
+                self.x[i] = 1
                 continue
             self.prefix[i] = (self.prefix[i - 1]*self._x + toInt(c)) % self.p
-            self.x[i + 1] = (self.x[i]*self._x) % self.p
-        for i in range(self.n):
-            if i == 0:
-                self.suffix[self.n - i - 1] = toInt(s[self.n - i - 1]) % self.p
-                continue
-            self.suffix[self.n - i - 1] = (self.suffix[self.n - i]*self._x + toInt(s[self.n - i - 1])) % self.p
+            self.suffix[i] = (self.suffix[i - 1]*self._x + toInt(self.s[self.n - i - 1])) % self.p
+            self.x[i] = (self.x[i - 1]*self._x) % self.p
+        # for i in range(self.n, -1, -1):
+        #     if i == 0:
+        #         self.suffix[self.n - i - 1] = toInt(s[self.n - i - 1]) % self.p
+        #         continue
+        #     self.suffix[self.n - i - 1] = (self.suffix[self.n - i]*self._x + toInt(s[i])) % self.p
 
     # def compare(self, l: int, a: int, b: int) -> bool:
     #     h1 = (self.prefix[a + l] + self.prefix[b]*self.x[l]) % self.p
@@ -45,12 +47,14 @@ class Solution:
     #     return left == rigth
 
     def check(self, left: int, length: int) -> bool:
-        prefix = self.prefix[left + length - 1]
-        prefix = prefix - self.prefix[left]*self.x[left]
+        l, r = left, left + length - 1
+        prefix = self.prefix[r]
+        prefix = prefix - (self.prefix[l - 1]*self.x[length] if l > 0 else 0)
         prefix = prefix % self.p
 
-        suffix = self.suffix[left]
-        suffix = suffix - self.suffix[length - 1]*self.x[left]
+        l, r = self.n - left - 1, self.n - length
+        suffix = self.suffix[l]
+        suffix = suffix - (self.suffix[r - 1]*self.x[length] if r > 0 else 0)
         suffix = suffix % self.p
         # if length < self.n:
         #     suffix = self.suffix[self.n - left + length - 2]
