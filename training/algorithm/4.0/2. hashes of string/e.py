@@ -49,7 +49,7 @@ class Solution:
     def check(self, left: int, length: int) -> bool:
         l, r = left, left + length - 1
         prefix = self.prefix[r]
-        prefix = prefix - (self.prefix[l - 1]*self.x[length] if l > 0 else 0)
+        prefix = prefix - (self.prefix[l - 1]*self.x[r - l + 1] if l > 0 else 0)
         prefix = prefix % self.p
 
         l, r = self.n - left - 1, self.n - length
