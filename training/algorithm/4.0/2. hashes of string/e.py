@@ -12,19 +12,19 @@ class Solution:
         self.s = s
         self._x = 10
         self.n = len(s)
-        self.prefix = [0] * self.n
-        self.suffix = [0] * self.n
-        self.x = [0] * self.n
+        self.prefix = [0] * (self.n + 1)
+        self.suffix = [0] * (self.n + 1)
+        self.x = [1] * (self.n + 1)
         self.p = 10**10 + 7
 
         for i, c in enumerate(self.s):
             if i == 0:
-                self.prefix[i] = (toInt(c)) % self.p
-                self.suffix[i] = (toInt(self.s[self.n - i - 1])) % self.p
-                self.x[i] = 1
+                self.prefix[i + 1] = (toInt(c)) % self.p
+                self.suffix[i + 1] = (toInt(self.s[self.n - i - 1])) % self.p
+                # self.x[i + 1] = 1
                 continue
-            self.prefix[i] = (self.prefix[i - 1]*self._x + toInt(c)) % self.p
-            self.suffix[i] = (self.suffix[i - 1]*self._x + toInt(self.s[self.n - i - 1])) % self.p
+            self.prefix[i + 1] = (self.prefix[i]*self._x + toInt(c)) % self.p
+            self.suffix[i + 1] = (self.suffix[i]*self._x + toInt(self.s[self.n - i - 1])) % self.p
             self.x[i] = (self.x[i - 1]*self._x) % self.p
         # for i in range(self.n, -1, -1):
         #     if i == 0:
@@ -47,14 +47,14 @@ class Solution:
     #     return left == rigth
 
     def check(self, left: int, length: int) -> bool:
-        l, r = left, left + length - 1
+        l, r = left, left + length
         prefix = self.prefix[r]
-        prefix = prefix - (self.prefix[l - 1]*self.x[r - l + 1] if l > 0 else 0)
+        prefix = prefix - self.prefix[l]*self.x[r - l]
         prefix = prefix % self.p
 
-        l, r = self.n - left - 1, self.n - length
-        suffix = self.suffix[l]
-        suffix = suffix - (self.suffix[r - 1]*self.x[length] if r > 0 else 0)
+        l, r = self.n - (left + length), self.n - left
+        suffix = self.suffix[r]
+        suffix = suffix - self.suffix[l]*self.x[r - l]
         suffix = suffix % self.p
         # if length < self.n:
         #     suffix = self.suffix[self.n - left + length - 2]
