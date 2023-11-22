@@ -21,7 +21,7 @@ def generate(nums: list[int]) -> None:
         else:
             return
         nums[i], nums[j] = nums[j], nums[i]
-        nums = nums[:i + 1] + nums[n - 1: i : -1]
+        nums = nums[:i + 1] + nums[n - 1:i: -1]
 
 
 def main():
