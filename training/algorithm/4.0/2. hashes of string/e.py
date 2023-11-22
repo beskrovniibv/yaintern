@@ -56,25 +56,26 @@ class Solution:
         suffix = self.suffix[r]
         suffix = suffix - self.suffix[l]*self.x[r - l]
         suffix = suffix % self.p
-        # if length < self.n:
-        #     suffix = self.suffix[self.n - left + length - 2]
-        #     suffix = suffix - self.suffix[left]*self.x[length - 1]
-        #     suffix = suffix % self.p
-        # else:
-        #     suffix = self.suffix[length - 1]
-        #     suffix = suffix - self.suffix[left]*self.x[length - 1]
-        #     suffix = suffix * self.x[self.n - length + 1]
-        #     suffix = suffix + self.suffix[left]
+
         return prefix == suffix
 
     def solve(self) -> int:
-        self.check(0, 10)
-        self.check(0, 9)
-        self.check(9, 1)
-        self.check(3, 3)
+        # self.check(0, 10)
+        # self.check(0, 9)
+        # self.check(9, 1)
+        # self.check(3, 3)
         count = 0
-        for i in range(self.n):
-            pass
+        for i in range(self.n + 1):
+            left = 1
+            right = self.n - left + 1
+            while right - left > 1:
+                middle = (left + rigth)//2
+                if self.check(left=i, length=middle):
+                    left = middle
+                else:
+                    right = middle
+            if left > 0:
+                cout += 
         return count
 
 
