@@ -22,7 +22,6 @@ n = int(input())
 
 for _ in range(n - 1):
     child, parent = input().split()
-    node = tree.get(parent)
     tree[child] = parent
 
 root = (set(tree.values()) - set(tree.keys())).pop()
